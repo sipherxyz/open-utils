@@ -22,7 +22,7 @@ echo.
 :: Configuration
 set "VS_INSTALL_PATH=C:\Program Files\Microsoft Visual Studio\2022\Community"
 set "VS_INSTALLER_PATH=C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-set "CONFIG_URL=https://shared.atherlabs.com/s2_vsconfig"
+set "CONFIG_URL=https://github.com/sipherxyz/open-utils/blob/main/setup-s2/s2_vsconfig"
 set "CONFIG_FILE=s2_vsconfig"
 
 :: Common winget parameters
@@ -85,6 +85,14 @@ winget install -e --id EpicGames.EpicGamesLauncher %WINGET_COMMON%
 :: Fork Git Client
 echo [INFO] Installing Fork Git Client...
 winget install --id=Fork.Fork -e %WINGET_COMMON%
+
+echo.
+
+:: Apache Ant
+echo [INFO] Installing Apache Ant...
+curl -LO "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.15-bin.zip"
+unzip apache-ant-1.10.15-bin.zip
+move apache-ant-1.10.15 "C:\Program Files\apache-ant-1.10.15"
 
 echo.
 
