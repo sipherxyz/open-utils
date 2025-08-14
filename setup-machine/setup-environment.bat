@@ -1,8 +1,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: S2 Environment Setup Script
-:: This script installs all required tools and dependencies for the S2 project
+:: Environment Setup Script
+:: This script installs all required tools and dependencies
 
 :: Check for administrator privileges
 net session >nul 2>&1
@@ -22,14 +22,14 @@ echo.
 :: Configuration
 set "VS_INSTALL_PATH=C:\Program Files\Microsoft Visual Studio\2022\Community"
 set "VS_INSTALLER_PATH=C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-set "CONFIG_URL=https://github.com/sipherxyz/open-utils/blob/main/setup-s2/s2_vsconfig"
-set "CONFIG_FILE=s2_vsconfig"
+set "CONFIG_URL=https://github.com/sipherxyz/open-utils/blob/main/setup-machine/vsconfig"
+set "CONFIG_FILE=vsconfig"
 
 :: Common winget parameters
 set "WINGET_COMMON=--accept-source-agreements --accept-package-agreements --silent"
 
 echo ========================================
-echo S2 Environment Setup
+echo Environment Setup
 echo ========================================
 echo.
 
@@ -122,7 +122,6 @@ echo.
 echo Next steps:
 echo 1. Restart your computer to ensure all tools are properly registered
 echo 2. Open Visual Studio and sign in with your Microsoft account
-echo 3. Clone the S2 repository and open the project
 
 echo.
 echo ========================================
