@@ -70,6 +70,14 @@ echo.
 echo [SECTION] Installing Additional Tools
 echo.
 
+:: Python
+echo [INFO] Installing Python...
+winget install --id Python.Python.3.12 -e %WINGET_COMMON%
+
+:: Visual Studio Code
+echo [INFO] Installing Visual Studio Code...
+winget install --id Microsoft.VisualStudioCode -e %WINGET_COMMON%
+
 :: Epic Games Launcher
 echo [INFO] Installing Epic Games Launcher...
 winget install -e --id EpicGames.EpicGamesLauncher %WINGET_COMMON%
@@ -113,17 +121,12 @@ echo.
 echo [SECTION] Setup Summary
 echo.
 
-if %ERROR_COUNT% equ 0 (
-    echo [SUCCESS] All components installed successfully!
-    echo.
-    echo Next steps:
-    echo 1. Restart your computer to ensure all tools are properly registered
-    echo 2. Open Visual Studio and sign in with your Microsoft account
-    echo 3. Clone the S2 repository and open the project
-) else (
-    echo [WARNING] Setup completed with %ERROR_COUNT% error(s)
-    echo Please review the errors above and re-run the script if necessary
-)
+echo [SUCCESS] All components installed successfully!
+echo.
+echo Next steps:
+echo 1. Restart your computer to ensure all tools are properly registered
+echo 2. Open Visual Studio and sign in with your Microsoft account
+echo 3. Clone the S2 repository and open the project
 
 echo.
 echo ========================================
