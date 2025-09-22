@@ -109,7 +109,7 @@ curl -LO "%CONFIG_URL%"
 :: Apply VS configuration
 if exist "%VS_INSTALLER_PATH%" (
     echo [INFO] Applying Visual Studio configuration...
-    "%VS_INSTALLER_PATH%" modify --installPath "%VS_INSTALL_PATH%" --config "%CONFIG_FILE%" --quiet
+    "%VS_INSTALLER_PATH%" modify --installPath "%VS_INSTALL_PATH%" --config "%CONFIG_FILE%" --installWhileDownloading --passive --force
 ) else (
     echo [WARNING] Visual Studio installer not found at expected path
     echo [INFO] Skipping Visual Studio configuration
