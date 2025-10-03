@@ -33,6 +33,11 @@ echo Environment Setup
 echo ========================================
 echo.
 
+:: Fork Git Client
+echo [INFO] Installing Fork Git Client...
+winget install --id=Fork.Fork -e %WINGET_COMMON%
+echo.
+
 :: ========================================
 :: Install Development Tools
 :: ========================================
@@ -77,10 +82,6 @@ winget install --id Microsoft.VisualStudioCode -e %WINGET_COMMON%
 :: Epic Games Launcher
 echo [INFO] Installing Epic Games Launcher...
 winget install -e --id EpicGames.EpicGamesLauncher %WINGET_COMMON%
-
-:: Fork Git Client
-echo [INFO] Installing Fork Git Client...
-winget install --id=Fork.Fork -e %WINGET_COMMON%
 
 echo.
 
