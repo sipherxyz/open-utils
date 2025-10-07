@@ -48,6 +48,16 @@ echo.
 echo [INFO] Installing Git...
 winget install --id Git.Git -e --source winget %WINGET_COMMON%
 
+:: Enable long paths in Windows
+echo [INFO] Enabling long paths in Windows...
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+
+:: Configure Git for long paths
+echo [INFO] Configuring Git for long paths...
+git config --system core.longpaths true
+
+echo.
+
 :: Git LFS
 echo [INFO] Installing Git LFS...
 winget install --id GitHub.GitLFS -e %WINGET_COMMON%
