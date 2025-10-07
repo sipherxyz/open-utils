@@ -37,7 +37,7 @@ echo.
 :: Configuration
 set "VS_INSTALL_PATH=C:\Program Files\Microsoft Visual Studio\2022\Community"
 set "VS_INSTALLER_PATH=C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-set "CONFIG_URL=https://github.com/sipherxyz/open-utils/blob/main/setup-machine/vsconfig"
+set "CONFIG_URL=https://raw.githubusercontent.com/sipherxyz/open-utils/refs/heads/main/setup-machine/vsconfig"
 set "CONFIG_FILE=vsconfig"
 
 :: Common winget parameters
