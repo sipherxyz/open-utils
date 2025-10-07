@@ -19,6 +19,21 @@ if %ERRORLEVEL% neq 0 (
 echo [OK] Running with administrator privileges
 echo.
 
+:: ========================================
+:: Additional Tools Confirmation
+:: ========================================
+echo [SECTION] Additional Development Tools
+echo.
+echo Install additional development tools? (Default: No)
+echo - AWS CLI
+echo - Android Studio  
+echo - Node.js
+echo - Ruby with DevKit
+echo.
+set /p "INSTALL_ADDITIONAL=Install additional tools? (y/N): "
+
+echo.
+
 :: Configuration
 set "VS_INSTALL_PATH=C:\Program Files\Microsoft Visual Studio\2022\Community"
 set "VS_INSTALLER_PATH=C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
@@ -53,6 +68,11 @@ winget install --id Kitware.CMake -e --version 3.31.6 %WINGET_COMMON%
 
 echo.
 
+:: Java
+echo [INFO] Installing Java...
+winget install -e --id Oracle.JDK.18 %WINGET_COMMON%
+winget install --id=Oracle.JavaRuntimeEnvironment -e %WINGET_COMMON%
+
 :: ========================================
 :: Install Visual Studio 2022 Community
 :: ========================================
@@ -78,10 +98,6 @@ winget install --id Python.Python.3.12 -e %WINGET_COMMON%
 echo [INFO] Installing Visual Studio Code...
 winget install --id Microsoft.VisualStudioCode -e %WINGET_COMMON%
 
-:: Epic Games Launcher
-echo [INFO] Installing Epic Games Launcher...
-winget install -e --id EpicGames.EpicGamesLauncher %WINGET_COMMON%
-
 :: Fork Git Client
 echo [INFO] Installing Fork Git Client...
 winget install --id=Fork.Fork -e %WINGET_COMMON%
@@ -89,10 +105,19 @@ winget install --id=Fork.Fork -e %WINGET_COMMON%
 echo.
 
 :: Apache Ant
-echo [INFO] Installing Apache Ant...
-curl -LO "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.15-bin.zip"
-unzip apache-ant-1.10.15-bin.zip
-move apache-ant-1.10.15 "C:\Program Files\apache-ant-1.10.15"
+echo [INFO] Checking if Apache Ant is already installed...
+set "ANT_FOUND=0"
+for /f "tokens=*" %%i in ('where ant 2^>nul') do set "ANT_FOUND=1"
+if %ANT_FOUND%==0 (
+    echo [INFO] Apache Ant not found, installing...
+    curl -LO "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.15-bin.zip"
+    powershell -Command "Expand-Archive -Path 'apache-ant-1.10.15-bin.zip' -DestinationPath '.' -Force"
+    move apache-ant-1.10.15 "C:\Program Files\apache-ant-1.10.15"
+    del apache-ant-1.10.15-bin.zip
+    echo [INFO] Apache Ant installed successfully
+) else (
+    echo [INFO] Apache Ant already installed, skipping installation
+)
 
 echo.
 
@@ -118,12 +143,76 @@ if exist "%VS_INSTALLER_PATH%" (
     echo [INFO] Skipping Visual Studio configuration
 )
 
-:: Clean up downloaded file
-if exist "%CONFIG_FILE%" (
-    del "%CONFIG_FILE%"
-    echo [INFO] Cleaned up configuration file
+echo.
+
+:: ========================================
+:: Install Additional Development Tools
+:: ========================================
+if /i "%INSTALL_ADDITIONAL%"=="y" (
+    echo [SECTION] Installing Additional Development Tools
+    echo.
+
+    :: AWS CLI
+    echo [INFO] Installing AWS CLI...
+    winget install -e --id Amazon.AWSCLI
+
+    :: Android Studio
+    echo [INFO] Installing Android Studio...
+    winget install -e --id Google.AndroidStudio
+
+    :: Node.js
+    echo [INFO] Installing Node.js...
+    winget install -e --id OpenJS.NodeJS
+
+    :: Ruby with DevKit
+    echo [INFO] Installing Ruby with DevKit...
+    winget install RubyInstallerTeam.RubyWithDevKit.3.2
+
+    echo.
+
+    :: ========================================
+    :: Install Package Managers and Tools
+    :: ========================================
+    echo [SECTION] Installing Package Managers and Tools
+    echo.
+
+    :: Python packages
+    echo [INFO] Installing Python packages...
+    pip install GitPython boto3 cryptography pysftp requests pycryptodome
+
+    :: Node.js global packages
+    echo [INFO] Installing Node.js global packages...
+    npm install -g appcenter-cli
+
+    :: Ruby gems
+    echo [INFO] Installing Ruby gems...
+    gem install fastlane
+
+    echo.
+) else (
+    echo [INFO] Skipping additional development tools installation
 )
 
+echo.
+
+:: ========================================
+:: Set Environment Variables
+:: ========================================
+echo [SECTION] Setting Environment Variables
+echo.
+
+:: Set JAVA_HOME for Apache Ant
+echo [INFO] Setting JAVA_HOME environment variable...
+setx JAVA_HOME "C:\Program Files\Java\jdk-18.0.2.1" /M
+
+
+:: Add tools to PATH
+echo [INFO] Adding development tools to PATH...
+set "LIST_PATH=C:\Program Files\apache-ant-1.10.15\bin;C:\Program Files\Git\bin;C:\Program Files\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin;"
+powershell -Command "$currentPath = [Environment]::GetEnvironmentVariable('PATH', 'Machine'); $pathsToAdd = '%LIST_PATH%'.Split(';'); $updatedPath = $currentPath; foreach ($path in $pathsToAdd) { if ($path -and $updatedPath -notlike ('*' + $path + '*')) { $updatedPath += ';' + $path; Write-Host ('Added ' + $path + ' to PATH') } else { Write-Host ($path + ' already in PATH or empty') } }; [Environment]::SetEnvironmentVariable('PATH', $updatedPath, 'Machine')"
+
+echo [INFO] Environment variables set successfully!
+echo [NOTE] You may need to restart your command prompt or IDE for changes to take effect.
 echo.
 
 :: ========================================
