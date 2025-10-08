@@ -127,6 +127,11 @@ if %ANT_FOUND%==0 (
     move apache-ant-1.10.15 "C:\Program Files\apache-ant-1.10.15"
     del apache-ant-1.10.15-bin.zip
     echo [INFO] Apache Ant installed successfully
+
+    echo [INFO] Downloading ant-contrib.jar library...
+    curl -LO "https://github.com/sipherxyz/open-utils/raw/refs/heads/main/ant-contrib.jar"
+    move ant-contrib.jar "C:\Program Files\apache-ant-1.10.15\lib\"
+    echo [INFO] ant-contrib.jar library installed successfully
 ) else (
     echo [INFO] Apache Ant already installed, skipping installation
 )
@@ -238,7 +243,8 @@ echo [SUCCESS] All components installed successfully!
 echo.
 echo Next steps:
 echo 1. Restart your computer to ensure all tools are properly registered
-echo 2. Open Visual Studio and start building
+echo 2. Verify environment variables (JAVA_HOME, ANDROID_HOME, NDKROOT, PATH, ...) are set correctly
+echo 3. Open Visual Studio and start building
 
 echo.
 echo ========================================
