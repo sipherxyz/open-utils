@@ -244,6 +244,10 @@ echo.
 echo Next steps:
 echo 1. Restart your computer to ensure all tools are properly registered
 echo 2. Verify environment variables (JAVA_HOME, ANDROID_HOME, NDKROOT, PATH, ...) are set correctly
+echo JAVA_HOME: %JAVA_HOME%
+echo ANDROID_HOME: %ANDROID_HOME%
+echo NDKROOT: %NDKROOT%
+echo PATH: %PATH%
 echo 3. Open Visual Studio and start building
 
 echo.
