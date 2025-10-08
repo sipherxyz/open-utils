@@ -22,7 +22,7 @@ echo.
 :: ========================================
 :: Additional Tools Confirmation
 :: ========================================
-echo [SECTION] Additional Development Tools
+echo [SECTION] Additional Development Tools (For building Sipher)
 echo.
 echo Install additional development tools? (Default: No)
 echo - AWS CLI
@@ -61,6 +61,10 @@ winget install --id Git.Git -e --source winget %WINGET_COMMON%
 :: Enable long paths in Windows
 echo [INFO] Enabling long paths in Windows...
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+
+:: Disable passwordless authentication
+echo [INFO] Disabling passwordless authentication...
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device" /v DevicePasswordLessBuildVersion /t REG_DWORD /d 0 /f
 
 :: Configure Git for long paths
 echo [INFO] Configuring Git for long paths...
@@ -210,13 +214,14 @@ echo [SECTION] Setting Environment Variables
 echo.
 
 :: Set JAVA_HOME for Apache Ant
-echo [INFO] Setting JAVA_HOME environment variable...
+echo [INFO] Setting JAVA_HOME, ANDROID_HOME, NDKROOT environment variable...
 setx JAVA_HOME "C:\Program Files\Java\jdk-18.0.2.1" /M
-
+setx ANDROID_HOME "C:\Users\%USERNAME%\AppData\Local\Android\Sdk" /M
+setx NDKROOT "C:\Users\%USERNAME%\AppData\Local\Android\Sdk\ndk\26.0.10792818" /M
 
 :: Add tools to PATH
 echo [INFO] Adding development tools to PATH...
-set "LIST_PATH=C:\Program Files\apache-ant-1.10.15\bin;C:\Program Files\Git\bin;C:\Program Files\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin;"
+set "LIST_PATH=C:\Program Files\apache-ant-1.10.15\bin;C:\Program Files\Git\bin;C:\Program Files\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin;C:\Users\%USERNAME%\AppData\Local\Android\Sdk\build-tools\36.1.0"
 powershell -Command "$currentPath = [Environment]::GetEnvironmentVariable('PATH', 'Machine'); $pathsToAdd = '%LIST_PATH%'.Split(';'); $updatedPath = $currentPath; foreach ($path in $pathsToAdd) { if ($path -and $updatedPath -notlike ('*' + $path + '*')) { $updatedPath += ';' + $path; Write-Host ('Added ' + $path + ' to PATH') } else { Write-Host ($path + ' already in PATH or empty') } }; [Environment]::SetEnvironmentVariable('PATH', $updatedPath, 'Machine')"
 
 echo [INFO] Environment variables set successfully!
@@ -233,7 +238,7 @@ echo [SUCCESS] All components installed successfully!
 echo.
 echo Next steps:
 echo 1. Restart your computer to ensure all tools are properly registered
-echo 2. Open Visual Studio and sign in with your Microsoft account
+echo 2. Open Visual Studio and start building
 
 echo.
 echo ========================================
