@@ -195,7 +195,7 @@ if /i "%INSTALL_ADDITIONAL%"=="y" (
 
     :: Python packages
     echo [INFO] Installing Python packages...
-    pip install GitPython boto3 cryptography pysftp requests pycryptodome
+    pip install GitPython boto3 cryptography pysftp requests pycryptodome paramiko==2.12.0
 
     :: Node.js global packages
     echo [INFO] Installing Node.js global packages...
