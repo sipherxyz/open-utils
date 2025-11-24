@@ -19,6 +19,27 @@ if %ERRORLEVEL% neq 0 (
 echo [OK] Running with administrator privileges
 echo.
 
+:: Check for WinGet and install if not present
+echo [INFO] Checking for WinGet...
+winget --version >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo [INFO] WinGet not found. Installing WinGet...
+    echo.
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "$progressPreference = 'silentlyContinue'; Write-Host '[INFO] Installing WinGet PowerShell module from PSGallery...'; Install-PackageProvider -Name NuGet -Force | Out-Null; Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null; Write-Host '[INFO] Using Repair-WinGetPackageManager cmdlet to bootstrap WinGet...'; Repair-WinGetPackageManager -AllUsers; Write-Host '[OK] WinGet installation complete.'"
+    echo.
+    :: Verify WinGet installation
+    winget --version >nul 2>&1
+    if %ERRORLEVEL% neq 0 (
+        echo [ERROR] WinGet installation failed. Please install WinGet manually and try again.
+        pause
+        exit /b 1
+    )
+    echo [OK] WinGet is now available
+) else (
+    echo [OK] WinGet is already installed
+)
+echo.
+
 :: Configuration
 set "VS_INSTALL_PATH=C:\Program Files\Microsoft Visual Studio\2022\Community"
 set "VS_INSTALLER_PATH=C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
