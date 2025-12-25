@@ -56,7 +56,7 @@ echo.
 
 :: Fork Git Client
 echo [INFO] Installing Fork Git Client...
-winget install --id=Fork.Fork -e %WINGET_COMMON%
+winget install --id=Fork.Fork -e --source winget %WINGET_COMMON%
 echo.
 
 :: ========================================
@@ -81,11 +81,11 @@ echo.
 
 :: Git LFS
 echo [INFO] Installing Git LFS...
-winget install --id GitHub.GitLFS -e %WINGET_COMMON%
+winget install --id GitHub.GitLFS -e --source winget %WINGET_COMMON%
 
 :: CMake
 echo [INFO] Installing CMake...
-winget install --id Kitware.CMake -e --version 3.31.6 %WINGET_COMMON%
+winget install --id Kitware.CMake -e --source winget --version 3.31.6 %WINGET_COMMON%
 
 echo.
 
@@ -96,7 +96,7 @@ echo [SECTION] Installing Visual Studio 2022 Community
 echo.
 
 echo [INFO] Installing Visual Studio 2022 Community with workloads...
-winget install --id Microsoft.VisualStudio.2022.Community -e --silent --disable-interactivity %WINGET_COMMON%
+winget install --id Microsoft.VisualStudio.2022.Community -e --source winget --silent --disable-interactivity %WINGET_COMMON%
 
 echo.
 
@@ -108,11 +108,11 @@ echo.
 
 :: Visual Studio Code
 echo [INFO] Installing Visual Studio Code...
-winget install --id Microsoft.VisualStudioCode -e %WINGET_COMMON%
+winget install --id Microsoft.VisualStudioCode -e --source winget %WINGET_COMMON%
 
 :: Epic Games Launcher
 echo [INFO] Installing Epic Games Launcher...
-winget install -e --id EpicGames.EpicGamesLauncher %WINGET_COMMON%
+winget install -e --id EpicGames.EpicGamesLauncher --source winget %WINGET_COMMON%
 
 echo.
 
