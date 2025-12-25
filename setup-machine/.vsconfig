@@ -50,6 +50,8 @@
     "Microsoft.VisualStudio.Workload.NativeGame",
     "Microsoft.VisualStudio.Component.VC.14.38.17.8.x86.x64",
     "Microsoft.VisualStudio.Component.VC.14.38.17.8.ATL",
+    "Microsoft.VisualStudio.Component.VC.14.43.17.13.x86.x64",
+    "Microsoft.VisualStudio.Component.VC.14.43.17.13.ATL",
     "Microsoft.VisualStudio.Component.VC.14.44.17.14.x86.x64",
     "Microsoft.VisualStudio.Component.VC.14.44.17.14.ATL"
   ],
