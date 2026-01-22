@@ -114,6 +114,14 @@ winget install --id Microsoft.VisualStudioCode -e %WINGET_COMMON%
 echo [INFO] Installing Fork Git Client...
 winget install --id=Fork.Fork -e %WINGET_COMMON%
 
+:: OpenCppCoverage
+echo [INFO] Installing OpenCppCoverage...
+winget install --id=OpenCppCoverage.OpenCppCoverage -e %WINGET_COMMON%
+
+:: Python requests package (always install)
+echo [INFO] Installing Python requests package...
+pip install requests
+
 echo.
 
 :: Apache Ant
