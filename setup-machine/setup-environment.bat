@@ -110,10 +110,6 @@ echo.
 echo [INFO] Installing Visual Studio Code...
 winget install --id Microsoft.VisualStudioCode -e --source winget %WINGET_COMMON%
 
-:: Epic Games Launcher
-echo [INFO] Installing Epic Games Launcher...
-winget install -e --id EpicGames.EpicGamesLauncher --source winget %WINGET_COMMON%
-
 echo.
 
 :: ========================================
