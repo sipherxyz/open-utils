@@ -171,10 +171,6 @@ echo.
 
 echo [SUCCESS] All components installed successfully!
 echo.
-echo Next steps:
-echo 1. Restart your computer to ensure all tools are properly registered
-echo 2. Open Visual Studio and sign in with your Microsoft account
-
 echo.
 echo ========================================
 echo Setup complete!
