@@ -162,12 +162,7 @@ powershell -NoProfile -Command "Start-Service sshd; Set-Service -Name sshd -Star
 
 :: Configure Windows Firewall - allow SSH from LAN only
 echo [INFO] Configuring firewall for SSH (LAN only)...
-powershell -NoProfile -Command ^
-    "Remove-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -ErrorAction SilentlyContinue; ^
-     New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (LAN Only)' ^
-       -Direction Inbound -Protocol TCP -LocalPort 22 -Action Allow ^
-       -RemoteAddress LocalSubnet ^
-       -Description 'Allow SSH connections from local network only'"
+powershell -NoProfile -Command "Remove-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -ErrorAction SilentlyContinue; New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (LAN Only)' -Direction Inbound -Protocol TCP -LocalPort 22 -Action Allow -RemoteAddress LocalSubnet -Description 'Allow SSH connections from local network only'"
 
 echo [OK] OpenSSH Server installed and firewall configured for LAN access only
 echo.
