@@ -54,9 +54,35 @@ echo Environment Setup
 echo ========================================
 echo.
 
+:: ========================================
+:: Installation Options
+:: ========================================
+echo [SECTION] Installation Options
+echo Choose which optional components to install.
+echo Press Enter to accept the default [Y].
+echo.
+
+set "INSTALL_FORK=Y"
+set /p "INSTALL_FORK=Install Fork Git Client? [Y/n]: "
+if /i "!INSTALL_FORK!"=="" set "INSTALL_FORK=Y"
+
+set "INSTALL_VSCODE=Y"
+set /p "INSTALL_VSCODE=Install Visual Studio Code? [Y/n]: "
+if /i "!INSTALL_VSCODE!"=="" set "INSTALL_VSCODE=Y"
+
+set "INSTALL_SSH=Y"
+set /p "INSTALL_SSH=Install and configure OpenSSH Server? [Y/n]: "
+if /i "!INSTALL_SSH!"=="" set "INSTALL_SSH=Y"
+
+echo.
+
 :: Fork Git Client
-echo [INFO] Installing Fork Git Client...
-winget install --id=Fork.Fork -e --source winget %WINGET_COMMON%
+if /i "!INSTALL_FORK!"=="Y" (
+    echo [INFO] Installing Fork Git Client...
+    winget install --id=Fork.Fork -e --source winget %WINGET_COMMON%
+) else (
+    echo [SKIP] Skipping Fork Git Client
+)
 echo.
 
 :: ========================================
@@ -107,8 +133,12 @@ echo [SECTION] Installing Additional Tools
 echo.
 
 :: Visual Studio Code
-echo [INFO] Installing Visual Studio Code...
-winget install --id Microsoft.VisualStudioCode -e --source winget %WINGET_COMMON%
+if /i "!INSTALL_VSCODE!"=="Y" (
+    echo [INFO] Installing Visual Studio Code...
+    winget install --id Microsoft.VisualStudioCode -e --source winget %WINGET_COMMON%
+) else (
+    echo [SKIP] Skipping Visual Studio Code
+)
 
 echo.
 
@@ -145,22 +175,23 @@ echo.
 :: ========================================
 :: Install and Configure OpenSSH Server
 :: ========================================
-echo [SECTION] Installing OpenSSH Server
-echo.
+if /i "!INSTALL_SSH!"=="Y" (
+    echo [SECTION] Installing OpenSSH Server
+    echo.
 
-:: Install OpenSSH Server capability
-echo [INFO] Installing OpenSSH Server...
-powershell -NoProfile -Command "Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0"
+    echo [INFO] Installing OpenSSH Server...
+    powershell -NoProfile -Command "Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0"
 
-:: Start and enable OpenSSH Server service
-echo [INFO] Starting OpenSSH Server service...
-powershell -NoProfile -Command "Start-Service sshd; Set-Service -Name sshd -StartupType Automatic"
+    echo [INFO] Starting OpenSSH Server service...
+    powershell -NoProfile -Command "Start-Service sshd; Set-Service -Name sshd -StartupType Automatic"
 
-:: Configure Windows Firewall - allow SSH from LAN only
-echo [INFO] Configuring firewall for SSH (LAN only)...
-powershell -NoProfile -Command "Remove-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -ErrorAction SilentlyContinue; New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (LAN Only)' -Direction Inbound -Protocol TCP -LocalPort 22 -Action Allow -RemoteAddress LocalSubnet -Description 'Allow SSH connections from local network only'"
+    echo [INFO] Configuring firewall for SSH (LAN only)...
+    powershell -NoProfile -Command "Remove-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -ErrorAction SilentlyContinue; New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (LAN Only)' -Direction Inbound -Protocol TCP -LocalPort 22 -Action Allow -RemoteAddress LocalSubnet -Description 'Allow SSH connections from local network only'"
 
-echo [OK] OpenSSH Server installed and firewall configured for LAN access only
+    echo [OK] OpenSSH Server installed and firewall configured for LAN access only
+) else (
+    echo [SKIP] Skipping OpenSSH Server installation
+)
 echo.
 
 :: ========================================
