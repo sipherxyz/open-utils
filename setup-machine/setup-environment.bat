@@ -109,6 +109,33 @@ echo.
 echo [INFO] Installing Git LFS...
 winget install --id GitHub.GitLFS -e --source winget %WINGET_COMMON%
 
+:: .NET 10 Runtime required by Unreal Engine 5.8 tools
+echo [INFO] Installing .NET 10 x64 Runtime...
+winget install --id Microsoft.DotNet.Runtime.10 -e --source winget --architecture x64 %WINGET_COMMON%
+if !ERRORLEVEL! neq 0 (
+    echo [ERROR] .NET 10 Runtime installation failed.
+    pause
+    exit /b 1
+)
+
+echo [INFO] Verifying .NET 10 Runtime...
+set "DOTNET_EXE=%ProgramFiles%\dotnet\dotnet.exe"
+if not exist "!DOTNET_EXE!" (
+    echo [ERROR] dotnet.exe was not found at !DOTNET_EXE!.
+    pause
+    exit /b 1
+)
+
+"!DOTNET_EXE!" --list-runtimes | findstr /R /C:"Microsoft.NETCore.App 10\." >nul
+if !ERRORLEVEL! neq 0 (
+    echo [ERROR] Microsoft.NETCore.App 10.x x64 Runtime was not found after installation.
+    echo [INFO] Installed runtimes:
+    "!DOTNET_EXE!" --list-runtimes
+    pause
+    exit /b 1
+)
+echo [OK] .NET 10 Runtime is installed
+
 :: CMake
 echo [INFO] Installing CMake...
 winget install --id Kitware.CMake -e --source winget --version 3.31.6 %WINGET_COMMON%
@@ -170,6 +197,30 @@ if exist "%CONFIG_FILE%" (
     echo [INFO] Cleaned up configuration file
 )
 
+echo.
+
+:: ========================================
+:: Install Visual C++ Redistributable
+:: ========================================
+echo [SECTION] Installing Visual C++ Redistributable
+echo.
+
+:: UE 5.8 requires a newer runtime than the one bundled with VS 2022.
+echo [INFO] Installing latest Visual C++ v14 x64 Redistributable...
+winget install --id Microsoft.VCRedist.2015+.x64 -e --source winget --architecture x64 %WINGET_COMMON%
+if !ERRORLEVEL! neq 0 (
+    echo [ERROR] Visual C++ x64 Redistributable installation failed.
+    pause
+    exit /b 1
+)
+
+echo [INFO] Verifying Visual C++ x64 Redistributable...
+powershell -NoProfile -Command "$required = [version]'14.50.35719.0'; $path = 'HKLM:\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64'; $installed = [version](Get-ItemPropertyValue -Path $path -Name Version).TrimStart('v'); Write-Host ('[INFO] Installed Visual C++ runtime: ' + $installed); if ($installed -lt $required) { Write-Host ('[ERROR] Visual C++ runtime ' + $required + ' or newer is required.'); exit 1 }"
+if !ERRORLEVEL! neq 0 (
+    pause
+    exit /b 1
+)
+echo [OK] Visual C++ x64 Redistributable is current
 echo.
 
 :: ========================================
